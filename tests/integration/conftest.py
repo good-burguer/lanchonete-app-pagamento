@@ -2,8 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 from app.main import app
 from app.infrastructure.db.database import get_db
 from app.adapters.utils.debug import var_dump_die
@@ -99,7 +98,6 @@ class FakeMongoCollection:
             doc = self._data[doc_id]
             match = True
             
-            # Comparação robusta entre query e documento
             for k, v in query.items():
                 if doc.get(k) != v:
                     match = False
