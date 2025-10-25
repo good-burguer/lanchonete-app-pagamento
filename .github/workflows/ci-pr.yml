@@ -48,7 +48,7 @@ jobs:
           docker buildx build \
             --platform linux/amd64 \
             --provenance=false --sbom=false \
-            -t lanchonete-app:ci-pr .
+            -t lanchonete-app-pagamento:ci-pr .
 
       - name: Create tests directory and add test_health.py
         run: |
