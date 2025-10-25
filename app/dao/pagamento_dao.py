@@ -10,7 +10,7 @@ from app.adapters.utils.debug import var_dump_die
 class PagamentoDAO:
     
     def __init__(self, db_session):
-        
+        self.db_name = 'pagamentos'
         self.db_session = db_session
 
     def criar_pagamento(self, pagamento: PagamentoCreateSchema) -> PagamentoModel | None:
@@ -26,7 +26,8 @@ class PagamentoDAO:
         }
         try:
             dbname = self.db_session
-            collection_name = dbname["pagamento_1_items"]
+            collection_name = dbname[self.db_name]
+            
             collection_name.insert_one(pagamento_dict)
 
         except IntegrityError as e:
@@ -36,13 +37,13 @@ class PagamentoDAO:
     
     def listar_todos_pagamentos(self):
         dbname = self.db_session
-        collection_name = dbname["pagamento_1_items"]
+        collection_name = dbname[self.db_name]
 
         return list(collection_name.find())
     
     def buscar_pagamento_por_codigo(self, codigo_pagamento: str) -> Pagamento | None: 
         dbname = self.db_session
-        collection_name = dbname["pagamento_1_items"]
+        collection_name = dbname[self.db_name]
         
         return collection_name.find_one({"codigo_pagamento": codigo_pagamento})
     
@@ -51,7 +52,7 @@ class PagamentoDAO:
         
         if pagamento_entity :
             dbname = self.db_session
-            collection_name = dbname["pagamento_1_items"]
+            collection_name = dbname[self.db_name]
 
             collection_name.update_one(
                 {"codigo_pagamento": codigo},
@@ -68,7 +69,8 @@ class PagamentoDAO:
                 raise ValueError("Pagamento não encontrado")
             
             dbname = self.db_session
-            collection_name = dbname["pagamento_1_items"]
+            collection_name = dbname[self.db_name]
+
             collection_name.delete_one(
                 {"codigo_pagamento": codigo_pagamento}
             )

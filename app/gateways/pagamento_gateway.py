@@ -1,6 +1,6 @@
 from sqlalchemy.exc import IntegrityError
 
-from app.entities.pagamento.entities import PagamentoEntities
+from app.entities.pagamento import PagamentoEntities
 from app.models.pagamento import Pagamento
 from typing import List, Optional
 from app.dao.pagamento_dao import PagamentoDAO

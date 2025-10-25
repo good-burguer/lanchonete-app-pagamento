@@ -1,5 +1,5 @@
 
-from app.entities.pagamento.entities import PagamentoEntities
+from app.entities.pagamento import PagamentoEntities
 from app.adapters.schemas.pagamento import PagamentoResponseSchema, PagamentoAtualizaSchema
 from app.adapters.dto.pagamento_dto import PagamentoCreateSchema
 from app.models.pagamento import Pagamento
