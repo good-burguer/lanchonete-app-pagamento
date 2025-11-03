@@ -1,9 +1,9 @@
 services:
-  app:
+  payment_app:
     build:
       context: ./bin
       dockerfile: Dockerfile
-    container_name: lanchonete_app_pagamento
+    container_name: lanchonete_app_payment
     ports:
       - "${APP_PORT}:8080"
     volumes:
@@ -11,3 +11,10 @@ services:
     env_file:
       - .env
     command: uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
+    networks:
+      - shared_net
+
+networks:
+  shared_net:
+    external: true
+    name: shared_net
