@@ -1,8 +1,10 @@
 
 from app.entities.pagamento import PagamentoEntities
-from app.adapters.schemas.pagamento import PagamentoResponseSchema, PagamentoAtualizaSchema
+from app.adapters.schemas.pagamento import PagamentoResponseSchema
 from app.adapters.dto.pagamento_dto import PagamentoCreateSchema
 from app.models.pagamento import Pagamento
+
+
 from app.adapters.utils.debug import var_dump_die
 
 class PagamentoUseCase:
@@ -43,11 +45,11 @@ class PagamentoUseCase:
 
         if not clienteAtualizado:
             raise ValueError("Pagamento não encontrado")
-    
+
         return (PagamentoResponseSchema(
                 pedido_id = clienteAtualizado['pedido'],
                 codigo_pagamento = clienteAtualizado['codigo_pagamento'],
-                status = str(clienteAtualizado['status'])
+                status = clienteAtualizado['status']
             ))
     
     def deletar_pagamento(self, codigo_pagamento: str): 
@@ -58,5 +60,5 @@ class PagamentoUseCase:
         return PagamentoResponseSchema(
             pedido_id = pagamento['pedido'],
             codigo_pagamento = pagamento['codigo_pagamento'],
-            status = str(pagamento['status'])
+            status = pagamento['status']
         )

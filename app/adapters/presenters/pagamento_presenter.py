@@ -1,9 +1,9 @@
 from pydantic import BaseModel
-from app.adapters.schemas.pagamento import PagamentoAtualizaSchema, PagamentoResponseSchema
+from app.adapters.schemas.pagamento import PagamentoResponseSchema
+from app.adapters.enums.status_pagamento import PagamentoStatusStringEnum
 
 class WebhookResponse(BaseModel):
-    status: str
-    data: PagamentoAtualizaSchema
+    status: PagamentoStatusStringEnum
 
 class PagamentoResponse(BaseModel):
     status: str

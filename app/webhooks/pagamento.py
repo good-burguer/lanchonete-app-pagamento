@@ -6,6 +6,7 @@ from app.infrastructure.db.database import get_db
 from app.adapters.dto.pagamento_dto import PagamentoAtualizaWebhookSchema
 from app.adapters.presenters.pagamento_presenter import WebhookResponse
 from app.controllers.pagamento_webhook_controller import PagamentoWebhookController
+from app.adapters.utils.debug import var_dump_die
 
 router = APIRouter(prefix="/webhook", tags=["webhook"])
 
@@ -37,7 +38,7 @@ def get_pagamento_gateway(db: Session = Depends(get_db)) -> PagamentoGateway:
 })
 def atualizar_pagamento(pagamento_data: PagamentoAtualizaWebhookSchema, gateway: PagamentoGateway = Depends(get_pagamento_gateway)):
     try:
-        
+
         return (PagamentoWebhookController(db_session=gateway)
                 .atualizar_pagamento(pagamento_data))
     except ValueError as e:

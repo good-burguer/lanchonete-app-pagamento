@@ -13,7 +13,7 @@ class PagamentoController:
     def criar_pagamento(self, cliente_data: PagamentoCreateSchema):
         try:
             result = PagamentoUseCase(self.db_session).criar_pagamento(cliente_data)
-
+            
             return PagamentoResponse(status='success', data = result)
         except Exception as e:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
