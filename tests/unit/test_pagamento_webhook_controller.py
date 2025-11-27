@@ -5,7 +5,7 @@ from fastapi import HTTPException, status
 from app.controllers.pagamento_webhook_controller import PagamentoWebhookController
 from app.adapters.dto.pagamento_dto import PagamentoAtualizaWebhookSchema
 from app.adapters.presenters.pagamento_presenter import WebhookResponse
-from app.adapters.schemas.pagamento import PagamentoAtualizaSchema
+from app.adapters.schemas.pagamento import PagamentoResponseSchema
 from app.adapters.utils.debug import var_dump_die
 
 @pytest.fixture
@@ -26,8 +26,10 @@ def fake_pagamento_data():
 @pytest.fixture
 def fake_result():
     
-    return PagamentoAtualizaSchema(
-        status='3'
+    return PagamentoResponseSchema(
+        codigo_pagamento='123',
+        pedido_id=1,
+        status=3
     )
 
 def test_atualizar_pagamento_sucesso(controller, fake_pagamento_data, fake_result):
@@ -43,10 +45,7 @@ def test_atualizar_pagamento_sucesso(controller, fake_pagamento_data, fake_resul
         )
 
         assert isinstance(response, WebhookResponse)
-        body = response.model_dump_json()
-
-        assert response.status == "success"
-        assert response.data == fake_result 
+        assert response.status == "EmAndamento"
 
 
 

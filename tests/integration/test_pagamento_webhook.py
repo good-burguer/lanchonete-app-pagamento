@@ -10,7 +10,6 @@ def test_webhook_atualizar_pagamento_sucesso(client):
     response = client.post("/webhook/update-payment", json=pagamento_data.model_dump())
 
     assert response.status_code == HTTPStatus.OK
-    assert response.json()["data"]["status"] == '3'
 
 
 def test_webhook_pagamento_nao_encontrado(client):

@@ -57,7 +57,7 @@ def test_atualizar_pagamento(client):
     })
 
     assert response.status_code == HTTPStatus.OK
-    assert response.json()["data"]["status"] == '3'
+    assert response.json()['data']['status'] == 3
 
 
 def test_deletar_pagamento(client):

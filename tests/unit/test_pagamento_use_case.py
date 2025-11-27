@@ -17,7 +17,7 @@ def pagamento_model():
     return {
         "pedido": 10,
         "codigo_pagamento": "ABC123",
-        "status": "3"
+        "status": 3
     }
 
 
@@ -32,7 +32,7 @@ def test_criar_pagamento_sucesso(use_case, fake_pagamento_entity):
     assert isinstance(result, PagamentoResponseSchema)
     assert result.pedido_id == 1
     assert result.codigo_pagamento == "123"
-    assert result.status == "1"
+    assert result.status == 1
 
 
 
@@ -79,7 +79,7 @@ def test_atualizar_pagamento_sucesso(use_case, fake_pagamento_entity):
     atualizado = {
         "pedido": 1,
         "codigo_pagamento": "XYZ789",
-        "status": "2"
+        "status": 2
     }
     fake_pagamento_entity.atualizar_pagamento.return_value = atualizado
 
@@ -87,7 +87,7 @@ def test_atualizar_pagamento_sucesso(use_case, fake_pagamento_entity):
 
     assert isinstance(result, PagamentoResponseSchema)
     assert result.codigo_pagamento == "XYZ789"
-    assert result.status == "2"
+    assert result.status == 2
 
 
 def test_atualizar_pagamento_nao_encontrado(use_case, fake_pagamento_entity):
