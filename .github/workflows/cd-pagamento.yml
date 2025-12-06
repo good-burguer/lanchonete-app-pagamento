@@ -57,7 +57,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: ${{ env.AWS_REGION }}
-          role-to-assume: ${{ vars.ROLE_ARN_PAGAMENTO }}
+          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME}}
           role-session-name: lanchonete-pagamento-cd
 
       - name: Login to Amazon ECR
