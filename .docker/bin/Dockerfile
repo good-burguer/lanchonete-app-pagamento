@@ -4,7 +4,7 @@ FROM python:3.12-slim-bookworm
 WORKDIR /app
 
 # Copia os arquivos de requirements
-COPY ./config/requirements.txt .
+COPY ./bin/config/requirements.txt .
 
 # Instala as dependências do projeto
 RUN pip install --upgrade pip \
