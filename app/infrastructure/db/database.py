@@ -6,7 +6,8 @@ Base = declarative_base()
 
 def get_db():
    try:
-      CONNECTION_STRING = os.getenv("DATABASE_URL")
+      #CONNECTION_STRING = os.getenv("DATABASE_URL")
+      CONNECTION_STRING = "mongodb+srv://codecraftersfiap_db_user:mCrGsAEC526cJSce@lanchonetepagamento.nk2pr5q.mongodb.net/?retryWrites=true&w=majority&appName=LanchonetePagamento"
       client = MongoClient(CONNECTION_STRING)
  
       print("Successfully connected")
