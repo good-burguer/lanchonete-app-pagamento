@@ -5,6 +5,12 @@ import sys
 from pymongo import MongoClient
 from pymongo.errors import PyMongoError
 
+# Backward compatibility: parts of the codebase/tests still expect SQLAlchemy Base here.
+# The service is migrating to MongoDB, but Base is kept to avoid import-time failures.
+from sqlalchemy.orm import declarative_base
+
+Base = declarative_base()
+
 try:
     import certifi
 except ImportError:
