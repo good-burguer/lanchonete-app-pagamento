@@ -87,6 +87,12 @@ jobs:
         run: |
           kubectl get nodes
 
+      - name: Apply MongoDB Secret (pagamento)
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        run: |
+          envsubst < k8s/secret-mongodb.yaml | kubectl apply -n app -f -
+
       - name: Deploy Kubernetes manifests (Deployment + Service)
         env:
           IMAGE_TAG: ${{ env.IMAGE_TAG }}
