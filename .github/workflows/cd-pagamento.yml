@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -44,6 +46,15 @@ jobs:
         run: |
           python -m pytest tests --cov=app --cov-report=xml:coverage.xml
 
+      - name: Verify coverage report (always)
+        if: always()
+        run: |
+          echo "PWD=$(pwd)"
+          echo "Listing repo root:"
+          ls -lah
+          echo "Searching for coverage.xml:"
+          find . -maxdepth 2 -name "coverage.xml" -print -exec ls -lah {} \; || true
+
       # --- SonarCloud scan na main ---
       - name: SonarCloud Scan (main)
         uses: sonarsource/sonarcloud-github-action@v3
@@ -51,6 +62,11 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_GB2 }}
         with:
           projectBaseDir: .
+          args: >
+            -Dsonar.sources=app
+            -Dsonar.tests=tests
+            -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.test.inclusions=tests/**
 
       # --- Login na AWS via OIDC ---
       - name: Configure AWS credentials (OIDC)
