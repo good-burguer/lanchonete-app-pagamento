@@ -11,7 +11,7 @@ def test_criar_pagamento_success(monkeypatch):
             pass
 
         def criar_pagamento(self, cliente_data):
-            return {"pedido": cliente_data.pedido_id, "codigo_pagamento": "abc", "status": 1}
+            return {"pedido_id": cliente_data.pedido_id, "codigo_pagamento": "abc", "status": 1}
 
     monkeypatch.setattr("app.controllers.pagamento_controller.PagamentoUseCase", FakeUseCase)
 
