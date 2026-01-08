@@ -37,23 +37,25 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r .docker/bin/config/requirements.txt
-          pip install pytest pytest-cov
+          pip install pytest pytest-cov coverage
 
       - name: Run tests (se existir pasta tests/)
         if: ${{ hashFiles('tests/**') != '' }}
         env:
           PYTHONPATH: .
         run: |
-          python -m pytest tests --cov=app --cov-report=xml:coverage.xml
+          python -m pytest
 
-      - name: Verify coverage report (always)
-        if: always()
+      - name: Verify coverage report
+        if: ${{ hashFiles('tests/**') != '' }}
         run: |
-          echo "PWD=$(pwd)"
-          echo "Listing repo root:"
-          ls -lah
-          echo "Searching for coverage.xml:"
-          find . -maxdepth 2 -name "coverage.xml" -print -exec ls -lah {} \; || true
+          if [ -f coverage.xml ]; then
+            echo "coverage.xml found:"
+            ls -lah coverage.xml
+          else
+            echo "coverage.xml NOT found"
+            exit 1
+          fi
 
       # --- SonarCloud scan na main ---
       - name: SonarCloud Scan (main)
@@ -66,7 +68,6 @@ jobs:
             -Dsonar.sources=app
             -Dsonar.tests=tests
             -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.test.inclusions=tests/**
 
       # --- Login na AWS via OIDC ---
       - name: Configure AWS credentials (OIDC)
@@ -87,7 +88,7 @@ jobs:
           IMAGE_URI=${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
           echo "Building image ${IMAGE_URI}"
           docker build -t "${IMAGE_URI}" -f .docker/bin/Dockerfile .
-          docker push "${IMAGE_URI}"     
+          docker push "${IMAGE_URI}"
       - name: Print image URI
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}

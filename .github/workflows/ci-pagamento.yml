@@ -26,29 +26,34 @@ jobs:
       - name: Install dependencies (FastAPI, pytest, etc)
         run: |
           if [ -f .docker/bin/config/requirements.txt ]; then
-            echo "Instalando dependências de .docker/bin/config/requirements.txt..."
+            echo "Installing dependencies from .docker/bin/config/requirements.txt..."
             pip install -r .docker/bin/config/requirements.txt
           else
             echo "Arquivo .docker/bin/config/requirements.txt não encontrado!"
             exit 1
           fi
-          pip install pytest pytest-cov
+          pip install pytest pytest-cov coverage
 
       - name: Run tests (se existir pasta tests/)
         env:
           PYTHONPATH: .
         run: |
           if [ -d tests ]; then
-            python -m pytest tests --cov=app --cov-report=xml:coverage.xml
+            echo "Running pytest with coverage..."
+            python -m pytest
           else
             echo "Nenhuma pasta de testes encontrada em tests, pulando etapa de testes."
           fi
 
       - name: Verify coverage report
-        if: ${{ hashFiles('coverage.xml') != '' }}
         run: |
-          echo "coverage.xml found:" 
-          ls -lah coverage.xml
+          if [ -f coverage.xml ]; then
+            echo "coverage.xml found:"
+            ls -lah coverage.xml
+          else
+            echo "coverage.xml NOT found"
+            exit 1
+          fi
 
       - name: SonarCloud Scan
         if: always()  # roda mesmo se os testes falharem, pra reportar
@@ -61,4 +66,3 @@ jobs:
             -Dsonar.sources=app
             -Dsonar.tests=tests
             -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.test.inclusions=tests/**
