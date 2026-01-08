@@ -19,7 +19,7 @@ def test_criar_pagamento_success(monkeypatch):
     result = controller.criar_pagamento(PagamentoCreateSchema(pedido_id=7))
 
     assert result.status == "success"
-    assert result.data["pedido"] == 7
+    assert result.data.pedido_id == 7
 
 
 def test_buscar_pagamento_not_found(monkeypatch):
